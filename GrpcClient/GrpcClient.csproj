@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,8 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\human_resource.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.10.0" />
-    <PackageReference Include="Grpc" Version="2.24.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.23.2" />
     <PackageReference Include="Grpc.Tools" Version="2.24.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -15,13 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Protos\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="..\GrpcServer\Protos\human_resource.proto" GrpcServices="Client">
-      <Link>Protos\human_resource.proto</Link>
-    </Protobuf>
+    <Protobuf Include="Protos\human_resource.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>
