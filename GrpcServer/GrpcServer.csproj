@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="kestrel.pfx" />
     <None Remove="Protos\human_resource.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="kestrel.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

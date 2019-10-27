@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using GrpcServer.Services;
@@ -18,6 +19,12 @@ namespace GrpcServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
+            //services.AddGrpc(
+            //    grpcOptions =>
+            //        {
+            //            grpcOptions.ResponseCompressionLevel = CompressionLevel.Optimal;
+            //            grpcOptions.ResponseCompressionAlgorithm = "gzip";
+            //        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,7 +41,7 @@ namespace GrpcServer
                 endpoints =>
                     {
                         endpoints.MapGrpcService<EmployeeService>();
-
+                        
                         endpoints.MapGet(
                             "/",
                             async context =>
