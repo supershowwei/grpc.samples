@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Grpc.Net.Compression;
 using GrpcClient.Extensions;
 using GrpcServer.HumanResource;
 
