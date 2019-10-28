@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
@@ -27,55 +28,21 @@ namespace GrpcClient
 
             // 建立連接到 https://localhost:5001 的通道
             //var channel = GrpcChannel.ForAddress("https://192.168.1.168:5001", new GrpcChannelOptions { HttpClient = httpClient });
-            var channel = GrpcChannel.ForAddress("http://192.168.1.168:5001");
+            var channel = GrpcChannel.ForAddress("http://192.168.0.132:5001");
 
             // 建立 EmployeeClient
             var client = new Employee.EmployeeClient(channel);
 
-            // 呼叫 AddEmployees()
-            var employees = new List<EmployeeModel>
-                               {
-                                   new EmployeeModel
-                                   {
-                                       Id = 1,
-                                       Name = "Johnny",
-                                       EmployeeType = EmployeeType.FirstLevel,
-                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = "0912345678" } }
-                                   },
-                                   new EmployeeModel
-                                   {
-                                       Id = 2,
-                                       Name = "Mary",
-                                       EmployeeType = EmployeeType.SecondLevel,
-                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = "0923456789" } }
-                                   },
-                                   new EmployeeModel
-                                   {
-                                       Id = 3,
-                                       Name = "Tom",
-                                       EmployeeType = EmployeeType.LastLevel,
-                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = "0934567890" } }
-                                   }
-                               };
+            // 呼叫 GetAllEmployees()
+            var employeesStream = client.GetAllEmployees(new EmployeeRequest { Id = 0 });
 
-            AsyncClientStreamingCall<EmployeeModel, EmployeeAddedResult> employeesStream;
-
-            using (employeesStream = client.AddEmployees())
+            // 讀取 Employees 串流
+            while (await employeesStream.ResponseStream.MoveNext())
             {
-                foreach (var employee in employees)
-                {
-                    await employeesStream.RequestStream.WriteAsync(employee);
-                }
+                var employee = employeesStream.ResponseStream.Current;
 
-                // Dispose() 會嘗試將狀態設為 Cancled (https://github.com/grpc/grpc-dotnet/blob/ca6cb660a5b9410d5b50a78387c52590dc31d13e/src/Grpc.Net.Client/Internal/GrpcCall.cs#L166)
-                // CompleteAsync() 則是會將完成的狀態設為 true (https://github.com/grpc/grpc-dotnet/blob/ca6cb660a5b9410d5b50a78387c52590dc31d13e/src/Grpc.Net.Client/Internal/HttpContentClientStreamWriter.cs#L73)
-                // 因此資料傳輸完畢之後，CompleteAsync() 是需要呼叫的。
-                await employeesStream.RequestStream.CompleteAsync();
-
-                var addedResult = await employeesStream.ResponseAsync;
-
-                // 輸出 EmployeeAddedResult 的序列化結果
-                Console.WriteLine(JsonSerializer.Serialize(addedResult, new JsonSerializerOptions { WriteIndented = true }));
+                // 輸出 EmployeeModel 的序列化結果
+                Console.WriteLine(JsonSerializer.Serialize(employee, new JsonSerializerOptions { WriteIndented = true }));
             }
 
             Console.ReadKey();

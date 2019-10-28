@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using GrpcServer.Extensions;
@@ -42,7 +43,7 @@ namespace GrpcServer.Services
                                        Id = 1,
                                        Name = "Johnny",
                                        EmployeeType = EmployeeType.FirstLevel,
-                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = "0912345678" } },
+                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = string.Join(",", Enumerable.Repeat("0912345678", 100)) } },
                                        ModifiedTime = new DateTime(2019, 10, 3, 17, 45, 00).ToUnixTimeMilliseconds()
                                    },
                                    new EmployeeModel
@@ -50,7 +51,7 @@ namespace GrpcServer.Services
                                        Id = 2,
                                        Name = "Mary",
                                        EmployeeType = EmployeeType.SecondLevel,
-                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = "0923456789" } },
+                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = string.Join(",", Enumerable.Repeat("0923456789", 100)) } },
                                        ModifiedTime = new DateTime(2019, 10, 4, 9, 21, 00).ToUnixTimeMilliseconds()
                                    },
                                    new EmployeeModel
@@ -58,13 +59,15 @@ namespace GrpcServer.Services
                                        Id = 3,
                                        Name = "Tom",
                                        EmployeeType = EmployeeType.LastLevel,
-                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = "0934567890" } },
+                                       PhoneNumbers = { new EmployeeModel.Types.PhoneNumber { Value = string.Join(",", Enumerable.Repeat("0934567890", 100)) } },
                                        ModifiedTime = new DateTime(2019, 10, 5, 10, 34, 00).ToUnixTimeMilliseconds()
                                    }
                                };
 
             foreach (var employee in allEmployees)
             {
+                await Task.Delay(2000);
+
                 await responseStream.WriteAsync(employee);
             }
         }

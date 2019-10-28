@@ -28,7 +28,7 @@ namespace GrpcServer
                                 serverOptions =>
                                     {
                                         serverOptions.Listen(
-                                            IPAddress.Parse("192.168.1.168"),
+                                            IPAddress.Parse("192.168.0.132"),
                                             5001,
                                             listenOptions =>
                                                 {
