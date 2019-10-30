@@ -28,12 +28,12 @@ namespace GrpcServer
                                 serverOptions =>
                                     {
                                         serverOptions.Listen(
-                                            IPAddress.Parse("192.168.0.132"),
+                                            IPAddress.Parse("192.168.0.188"),
                                             5001,
                                             listenOptions =>
                                                 {
                                                     listenOptions.Protocols = HttpProtocols.Http2;
-                                                    //listenOptions.UseHttps("kestrel.pfx", "changeit");
+                                                    listenOptions.UseHttps("kestrel.pfx", "changeit");
                                                 });
                                     })
                             .UseStartup<Startup>();

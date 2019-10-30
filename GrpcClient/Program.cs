@@ -19,17 +19,26 @@ namespace GrpcClient
             // 等待 Server 啟動
             await Task.Delay(5000);
 
-            //var httpClient = new HttpClient(
-            //    new HttpClientHandler
-            //    {
-            //        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            //    });
+            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            //// 建立連接到 gRPC 服務的通道
+            //var channel = GrpcChannel.ForAddress("http://192.168.0.188:5001");
 
-            // 建立連接到 https://localhost:5001 的通道
-            //var channel = GrpcChannel.ForAddress("https://192.168.1.168:5001", new GrpcChannelOptions { HttpClient = httpClient });
-            var channel = GrpcChannel.ForAddress("http://192.168.0.132:5001");
+
+
+            //// 建立連接到 gRPC 服務的通道
+            //var channel = GrpcChannel.ForAddress("https://192.168.0.188:5001");
+
+
+
+            var httpClient = new HttpClient(
+                new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                });
+
+            // 建立連接到 gRPC 服務的通道
+            var channel = GrpcChannel.ForAddress("https://192.168.0.188:5001", new GrpcChannelOptions { HttpClient = httpClient });
 
             // 建立 EmployeeClient
             var client = new Employee.EmployeeClient(channel);
