@@ -24,19 +24,21 @@ namespace GrpcServer
                 .ConfigureWebHostDefaults(
                     webBuilder =>
                         {
-                            webBuilder.UseKestrel(
-                                serverOptions =>
-                                    {
-                                        serverOptions.Listen(
-                                            IPAddress.Parse("192.168.0.188"),
-                                            5001,
-                                            listenOptions =>
-                                                {
-                                                    listenOptions.Protocols = HttpProtocols.Http2;
-                                                    listenOptions.UseHttps("kestrel.pfx", "changeit");
-                                                });
-                                    })
-                            .UseStartup<Startup>();
+                            //webBuilder.UseKestrel(
+                            //    serverOptions =>
+                            //        {
+                            //            serverOptions.Listen(
+                            //                IPAddress.Parse("192.168.0.188"),
+                            //                5001,
+                            //                listenOptions =>
+                            //                    {
+                            //                        listenOptions.Protocols = HttpProtocols.Http2;
+                            //                        listenOptions.UseHttps("kestrel.pfx", "changeit");
+                            //                    });
+                            //        })
+                            //.UseStartup<Startup>();
+                            
+                            webBuilder.UseStartup<Startup>();
                         });
     }
 }

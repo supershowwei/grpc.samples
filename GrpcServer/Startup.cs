@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using GrpcServer.Interceptors;
 using GrpcServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,8 @@ namespace GrpcServer
                     {
                         grpcOptions.ResponseCompressionLevel = CompressionLevel.Optimal;
                         grpcOptions.ResponseCompressionAlgorithm = "gzip";
+
+                        grpcOptions.Interceptors.Add<LogInterceptor>();
                     });
         }
 

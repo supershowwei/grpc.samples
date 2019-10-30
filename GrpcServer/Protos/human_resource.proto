@@ -8,6 +8,7 @@ service Employee {
 	rpc GetAllEmployees (EmployeeRequest) returns (stream EmployeeModel);
 	rpc AddEmployee (EmployeeModel) returns (EmployeeAddedResult);
 	rpc AddEmployees (stream EmployeeModel) returns (EmployeeAddedResult);
+	rpc TransferEmployees (stream EmployeeModel) returns (stream EmployeeModel);
 }
 
 message EmployeeRequest {

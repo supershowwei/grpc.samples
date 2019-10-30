@@ -67,7 +67,6 @@ namespace GrpcServer.Services
             foreach (var employee in allEmployees)
             {
                 await Task.Delay(2000);
-
                 await responseStream.WriteAsync(employee);
             }
         }
@@ -93,6 +92,15 @@ namespace GrpcServer.Services
             // ... Do batch add employees.
 
             return new EmployeeAddedResult { IsSuccess = true };
+        }
+
+        public override async Task TransferEmployees(IAsyncStreamReader<EmployeeModel> requestStream, IServerStreamWriter<EmployeeModel> responseStream, ServerCallContext context)
+        {
+            while (await requestStream.MoveNext())
+            {
+                await Task.Delay(2000);
+                await responseStream.WriteAsync(requestStream.Current);
+            }
         }
     }
 }
