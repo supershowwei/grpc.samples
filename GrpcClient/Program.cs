@@ -73,7 +73,7 @@ namespace GrpcClient
 
             using (employeesStream = client.TransferEmployees())
             {
-                var a = Task.Run(
+                var requestTask = Task.Run(
                     async () =>
                         {
                             foreach (var employee in employees)
@@ -90,7 +90,7 @@ namespace GrpcClient
                             await employeesStream.RequestStream.CompleteAsync();
                         });
 
-                var b = Task.Run(
+                var responseTask = Task.Run(
                     async () =>
                         {
                             while (await employeesStream.ResponseStream.MoveNext())
@@ -102,8 +102,8 @@ namespace GrpcClient
                             }
                         });
 
-                await a;
-                await b;
+                await requestTask;
+                await responseTask;
             }
 
             Console.ReadKey();
