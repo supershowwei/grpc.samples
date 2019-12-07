@@ -24,6 +24,19 @@ namespace GrpcServer
                 .ConfigureWebHostDefaults(
                     webBuilder =>
                         {
+                            webBuilder.UseKestrel(
+                                serverOptions =>
+                                    {
+                                        serverOptions.ListenLocalhost(
+                                            5001,
+                                            listenOptions =>
+                                                {
+                                                    listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                                                    listenOptions.UseHttps();
+                                                });
+                                    })
+                                .UseStartup<Startup>();
+
                             //webBuilder.UseKestrel(
                             //    serverOptions =>
                             //        {
@@ -37,8 +50,8 @@ namespace GrpcServer
                             //                    });
                             //        })
                             //.UseStartup<Startup>();
-                            
-                            webBuilder.UseStartup<Startup>();
+
+                            //webBuilder.UseStartup<Startup>();
                         });
     }
 }

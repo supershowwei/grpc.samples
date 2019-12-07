@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,6 +51,14 @@ namespace GrpcServer
                                 {
                                     await context.Response.WriteAsync(
                                         "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                                });
+
+                        endpoints.MapGet(
+                            "/protos/human_resource",
+                            async context =>
+                                {
+                                    await context.Response.WriteAsync(
+                                        File.ReadAllText(Path.Combine(env.ContentRootPath, @"Protos\human_resource.proto")));
                                 });
                     });
         }
