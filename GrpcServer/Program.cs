@@ -27,15 +27,22 @@ namespace GrpcServer
                             webBuilder.UseKestrel(
                                 serverOptions =>
                                     {
-                                        serverOptions.ListenLocalhost(
-                                            5001,
-                                            listenOptions =>
-                                                {
-                                                    listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                                                    listenOptions.UseHttps();
-                                                });
+                                        serverOptions.Listen(IPAddress.Parse("192.168.0.188"), 5001);
                                     })
                                 .UseStartup<Startup>();
+
+                            //webBuilder.UseKestrel(
+                            //    serverOptions =>
+                            //        {
+                            //            serverOptions.ListenLocalhost(
+                            //                5001,
+                            //                listenOptions =>
+                            //                    {
+                            //                        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                            //                        listenOptions.UseHttps();
+                            //                    });
+                            //        })
+                            //    .UseStartup<Startup>();
 
                             //webBuilder.UseKestrel(
                             //    serverOptions =>

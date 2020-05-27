@@ -21,10 +21,10 @@ namespace GrpcClient
             // 等待 Server 啟動
             await Task.Delay(5000);
 
-            //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
-            //// 建立連接到 gRPC 服務的通道
-            //var channel = GrpcChannel.ForAddress("http://192.168.0.188:5001");
+            // 建立連接到 gRPC 服務的通道
+            var channel = GrpcChannel.ForAddress("http://192.168.0.188:5001");
 
 
 
@@ -39,8 +39,10 @@ namespace GrpcClient
 
 
 
-            // 建立連接到 gRPC 服務的通道
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            //// 建立連接到 gRPC 服務的通道
+            //var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            
+            
             var callInvoker = channel.Intercept(new LogInterceptor());
 
             // 建立 EmployeeClient
